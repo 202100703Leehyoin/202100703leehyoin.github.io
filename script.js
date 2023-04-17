@@ -1,38 +1,22 @@
-.calculator {
-  width: 300px;
-  margin: 50px auto;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 5px;
+let expression = "";
+
+function insert(value) {
+  expression += value;
+  document.querySelector(".screen").value = expression;
 }
 
-.screen {
-  grid-column: 1 / -1;
-  height: 40px;
-  font-size: 24px;
-  text-align: right;
-  padding: 5px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  background-color: #f7f7f7;
+function clearScreen() {
+  expression = "";
+  document.querySelector(".screen").value = "";
 }
 
-.btn {
-  height: 50px;
-  font-size: 24px;
-  border: none;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s;
+function backspace() {
+  expression = expression.slice(0, -1);
+  document.querySelector(".screen").value = expression;
 }
 
-.btn:hover {
-  background-color: #333;
-  color: #fff;
+function calculate() {
+  let result = eval(expression);
+  expression = result.toString();
+  document.querySelector(".screen").value = result;
 }
