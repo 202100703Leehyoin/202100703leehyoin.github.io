@@ -1,22 +1,133 @@
-let expression = "";
+const display = document.querySelector('.calculator-display');
 
-function insert(value) {
-  expression += value;
-  document.querySelector(".screen").value = expression;
+const numberButtons = document.querySelectorAll('[data-number]');
+
+const operatorButtons = document.querySelectorAll('[data-operator]');
+
+const clearButton = document.querySelector('[data-clear]');
+
+const equalsButton = document.querySelector('[data-equals]');
+
+ 
+
+let currentValue = '';
+
+let previousValue = '';
+
+let currentOperator = null;
+
+let shouldResetDisplay = false;
+
+ 
+
+numberButtons.forEach(button => {
+
+button.addEventListener('click', () => {
+
+if (shouldResetDisplay) {
+
+display.value = '';
+
+shouldResetDisplay = false;
+
 }
 
-function clearScreen() {
-  expression = "";
-  document.querySelector(".screen").value = "";
-}
+display.value += button.textContent;
 
-function backspace() {
-  expression = expression.slice(0, -1);
-  document.querySelector(".screen").value = expression;
-}
+});
+
+});
+
+ 
+
+operatorButtons.forEach(button => {
+
+button.addEventListener('click', () => {
+
+if (currentOperator) calculate();
+
+previousValue = display.value;
+
+currentOperator = button.dataset.operatorType;
+
+shouldResetDisplay = true;
+
+});
+
+});
+
+ 
+
+equalsButton.addEventListener('click', () => {
+
+if (!currentOperator) return;
+
+calculate();
+
+});
+
+ 
+
+clearButton.addEventListener('click', () => {
+
+currentValue = '';
+
+previousValue = '';
+
+currentOperator = null;
+
+display.value = '';
+
+});
+
+ 
 
 function calculate() {
-  let result = eval(expression);
-  expression = result.toString();
-  document.querySelector(".screen").value = result;
+
+currentValue = display.value;
+
+let result;
+
+ 
+
+switch (currentOperator) {
+
+case 'add':
+
+result = parseFloat(previousValue) + parseFloat(currentValue);
+
+break;
+
+case 'subtract':
+
+result = parseFloat(previousValue) - parseFloat(currentValue);
+
+break;
+
+case 'multiply':
+
+result = parseFloat(previousValue) * parseFloat(currentValue);
+
+break;
+
+case 'divide':
+
+result = parseFloat(previousValue) / parseFloat(currentValue);
+
+break;
+
+default:
+
+return;
+
+}
+
+ 
+
+display.value = result;
+
+currentOperator = null;
+
+shouldResetDisplay = true;
+
 }
